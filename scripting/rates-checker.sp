@@ -22,8 +22,6 @@
 #include "modules/use-case.sp"
 #include "modules/validator.sp"
 
-#define AUTO_CREATE_YES true
-
 public Plugin myinfo = {
     name = "Rates checker",
     author = "Dron-elektron",
@@ -39,7 +37,7 @@ public void OnPluginStart() {
     Event_Create();
     LoadTranslations("common.phrases");
     LoadTranslations("rates-checker.phrases");
-    AutoExecConfig(AUTO_CREATE_YES, "rates-checker");
+    AutoExecConfig(_, "rates-checker");
 }
 
 public void OnPluginEnd() {
