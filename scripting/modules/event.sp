@@ -1,6 +1,6 @@
 void Event_Create() {
     HookEvent("player_spawn", OnPlayerSpawn);
-    HookEvent("player_disconnect", OnPlayerDisconnect);
+    HookEvent("player_disconnect", OnPlayerDisconnect, EventHookMode_Pre);
 }
 
 static void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) {
