@@ -7,12 +7,12 @@ void UseCase_CheckSettings(int client) {
 }
 
 void UseCase_OnCheckSettings(int client, StringMap settings) {
-    if (UseCase_CheckSettingsType(client, settings)) {
-        UseCase_CheckSettingsRange(client, settings);
+    if (CheckSettingsType(client, settings)) {
+        CheckSettingsRange(client, settings);
     }
 }
 
-bool UseCase_CheckSettingsType(int client, StringMap settings) {
+static bool CheckSettingsType(int client, StringMap settings) {
     if (Variable_ValidationMode() < ValidationMode_Type) {
         return false;
     }
@@ -28,9 +28,9 @@ bool UseCase_CheckSettingsType(int client, StringMap settings) {
         bool isValid;
 
         if (valueType == ValueType_Int) {
-            isValid = UseCase_CheckIntegerType(client, cvarName, cvarValue);
+            isValid = CheckIntegerType(client, cvarName, cvarValue);
         } else {
-            isValid = UseCase_CheckFloatType(client, cvarName, cvarValue);
+            isValid = CheckFloatType(client, cvarName, cvarValue);
         }
 
         if (!isValid) {
@@ -41,7 +41,7 @@ bool UseCase_CheckSettingsType(int client, StringMap settings) {
     return true;
 }
 
-void UseCase_CheckSettingsRange(int client, StringMap settings) {
+static void CheckSettingsRange(int client, StringMap settings) {
     if (Variable_ValidationMode() < ValidationMode_Value) {
         return;
     }
@@ -57,9 +57,9 @@ void UseCase_CheckSettingsRange(int client, StringMap settings) {
         bool isValid;
 
         if (valueType == ValueType_Int) {
-            isValid = UseCase_CheckIntegerRange(client, cvarName, cvarValue, i);
+            isValid = CheckIntegerRange(client, cvarName, cvarValue, i);
         } else {
-            isValid = UseCase_CheckFloatRange(client, cvarName, cvarValue, i);
+            isValid = CheckFloatRange(client, cvarName, cvarValue, i);
         }
 
         if (!isValid) {
@@ -68,7 +68,7 @@ void UseCase_CheckSettingsRange(int client, StringMap settings) {
     }
 }
 
-bool UseCase_CheckIntegerType(int client, const char[] cvarName, const char[] cvarValue) {
+static bool CheckIntegerType(int client, const char[] cvarName, const char[] cvarValue) {
     if (!Validator_IsInt(cvarValue)) {
         KickClient(client, "%t", "Invalid integer format", cvarName, cvarValue);
         Message_PlayerKickedForInvalidType(client, cvarName, cvarValue);
@@ -79,7 +79,7 @@ bool UseCase_CheckIntegerType(int client, const char[] cvarName, const char[] cv
     return true;
 }
 
-bool UseCase_CheckFloatType(int client, const char[] cvarName, const char[] cvarValue) {
+static bool CheckFloatType(int client, const char[] cvarName, const char[] cvarValue) {
     if (!Validator_IsFloat(cvarValue)) {
         KickClient(client, "%t", "Invalid float format", cvarName, cvarValue);
         Message_PlayerKickedForInvalidType(client, cvarName, cvarValue);
@@ -90,7 +90,7 @@ bool UseCase_CheckFloatType(int client, const char[] cvarName, const char[] cvar
     return true;
 }
 
-bool UseCase_CheckIntegerRange(int client, const char[] cvarName, const char[] cvarValue, int cvarIndex) {
+static bool CheckIntegerRange(int client, const char[] cvarName, const char[] cvarValue, int cvarIndex) {
     int minValue = Variable_CvarLimitInteger(cvarIndex * CvarLimit_Amount + CvarLimit_Min);
     int maxValue = Variable_CvarLimitInteger(cvarIndex * CvarLimit_Amount + CvarLimit_Max);
     int value = StringToInt(cvarValue);
@@ -105,7 +105,7 @@ bool UseCase_CheckIntegerRange(int client, const char[] cvarName, const char[] c
     return true;
 }
 
-bool UseCase_CheckFloatRange(int client, const char[] cvarName, const char[] cvarValue, int cvarIndex) {
+static bool CheckFloatRange(int client, const char[] cvarName, const char[] cvarValue, int cvarIndex) {
     float minValue = Variable_CvarLimitFloat(cvarIndex * CvarLimit_Amount + CvarLimit_Min);
     float maxValue = Variable_CvarLimitFloat(cvarIndex * CvarLimit_Amount + CvarLimit_Max);
     float value = StringToFloat(cvarValue);
@@ -122,7 +122,7 @@ bool UseCase_CheckFloatRange(int client, const char[] cvarName, const char[] cva
 
 int UseCase_FindPreviousClient(int client) {
     for (int i = client - 1; i > 0; i--) {
-        if (UseCase_IsValidClient(i)) {
+        if (IsValidClient(i)) {
             return i;
         }
     }
@@ -132,7 +132,7 @@ int UseCase_FindPreviousClient(int client) {
 
 int UseCase_FindNextClient(int client) {
     for (int i = client + 1; i <= MaxClients; i++) {
-        if (UseCase_IsValidClient(i)) {
+        if (IsValidClient(i)) {
             return i;
         }
     }
@@ -140,6 +140,6 @@ int UseCase_FindNextClient(int client) {
     return CLIENT_NOT_FOUND;
 }
 
-bool UseCase_IsValidClient(int client) {
+static bool IsValidClient(int client) {
     return IsClientInGame(client) && !IsFakeClient(client) && !IsClientSourceTV(client);
 }
