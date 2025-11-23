@@ -41,10 +41,6 @@ public void OnPluginStart() {
     AutoExecConfig(_, "rates-checker");
 }
 
-public void OnPluginEnd() {
-    Validator_Destroy();
-}
-
 public void OnMapStart() {
     Sound_Precache();
 }

@@ -6,11 +6,6 @@ void Validator_Create() {
     g_floatRegex = CompileRegex("^((0|[1-9][0-9]*)(\\.[0-9]+)?|\\.[0-9]+)$");
 }
 
-void Validator_Destroy() {
-    delete g_intRegex;
-    delete g_floatRegex;
-}
-
 bool Validator_IsInt(const char[] value) {
     int matches = g_intRegex.Match(value);
 
