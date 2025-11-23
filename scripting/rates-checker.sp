@@ -12,6 +12,7 @@
 #include "rates-checker/validator"
 
 #include "modules/bundle.sp"
+#include "modules/client.sp"
 #include "modules/console-command.sp"
 #include "modules/console-variable.sp"
 #include "modules/event.sp"
@@ -46,6 +47,10 @@ public void OnPluginEnd() {
 
 public void OnMapStart() {
     Sound_Precache();
+}
+
+public void OnClientConnected(int client) {
+    Client_EnableKickEvent(client);
 }
 
 public void OnClientPostAdminCheck(int client) {

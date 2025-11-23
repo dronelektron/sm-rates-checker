@@ -70,6 +70,7 @@ static void CheckSettingsRange(int client, StringMap settings) {
 
 static bool CheckIntegerType(int client, const char[] cvarName, const char[] cvarValue) {
     if (!Validator_IsInt(cvarValue)) {
+        Client_DisableKickEvent(client);
         KickClient(client, "%t", "Invalid integer format", cvarName, cvarValue);
         Message_PlayerKickedForInvalidType(client, cvarName, cvarValue);
 
@@ -81,6 +82,7 @@ static bool CheckIntegerType(int client, const char[] cvarName, const char[] cva
 
 static bool CheckFloatType(int client, const char[] cvarName, const char[] cvarValue) {
     if (!Validator_IsFloat(cvarValue)) {
+        Client_DisableKickEvent(client);
         KickClient(client, "%t", "Invalid float format", cvarName, cvarValue);
         Message_PlayerKickedForInvalidType(client, cvarName, cvarValue);
 
@@ -96,6 +98,7 @@ static bool CheckIntegerRange(int client, const char[] cvarName, const char[] cv
     int value = StringToInt(cvarValue);
 
     if (value < minValue || value > maxValue) {
+        Client_DisableKickEvent(client);
         KickClient(client, "%t", "Invalid integer value", cvarName, cvarValue, minValue, maxValue);
         Message_PlayerKickedForInvalidValue(client, cvarName, cvarValue);
 
@@ -111,6 +114,7 @@ static bool CheckFloatRange(int client, const char[] cvarName, const char[] cvar
     float value = StringToFloat(cvarValue);
 
     if (value < minValue || value > maxValue) {
+        Client_DisableKickEvent(client);
         KickClient(client, "%t", "Invalid float value", cvarName, cvarValue, minValue, maxValue);
         Message_PlayerKickedForInvalidValue(client, cvarName, cvarValue);
 
